@@ -3,7 +3,7 @@ import transcribe
 import video_editor
 import os
 
-padding = float(0.2)
+padding = float(0.15)
 
 def main():
     channel_url = input("Enter a YouTube channel URL: ")
@@ -22,11 +22,18 @@ def main():
     clip_paths = []
 
     for video in videos[start_video:end_video]:
-        title, url = video['title'], video['url']
-        print(f"\nVideo {title}")
+        title, url, id = video['title'], video['url'], video['id']
 
         download_directory = "../downloads"
-        video_path = download_directory + "/" + video['id'] + ".webm"
+        clips_directory = "../clips"
+
+        clip_path = clips_directory + "/" + id + ".mp4"
+        if os.path.exists(clip_path):
+            continue
+        
+        print(f"\nVideo {title}")
+
+        video_path = download_directory + "/" + id + ".webm"
         if not os.path.exists(video_path):
             print(f"Downloading \"{url}\"...")
             video_path = youtube.download_video(url, download_directory, resolution=resolution, range=(0, max_range))
@@ -47,7 +54,7 @@ def main():
             text, start, end = phrase["text"], phrase["start"], phrase["end"]
             print(f"Matching phrase: \"{text}\"")
             print(f"Creating clip from {start:.2f} to {end:.2f}...")
-            clip_output = video_editor.extract_clip(video_path, start, end, "../clips")
+            clip_output = video_editor.extract_clip(video_path, start, end, clips_directory)
             clip_paths.append(clip_output)
             print(f"Clip created \"{clip_output}\"")
 
