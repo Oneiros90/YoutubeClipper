@@ -4,7 +4,7 @@ def download_video(url, output_path, resolution=720, range=(0, 60)):
     ydl_opts = {
         'format': f'bestvideo[height<={resolution}]+bestaudio/best',
         'download_ranges': yt_dlp.utils.download_range_func(None, [range]),
-        'outtmpl': f'{output_path}/%(id)s.%(ext)s',
+        'outtmpl': output_path,
         'quiet': True
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

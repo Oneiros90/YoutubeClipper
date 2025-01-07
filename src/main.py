@@ -22,7 +22,7 @@ def main():
     clip_paths = []
 
     for video in videos[start_video:end_video]:
-        title, url, id = video['title'], video['url'], video['id']
+        title, url, id = video['title'], video['url'], str(video['id']).lstrip('-')
 
         download_directory = "../downloads"
         clips_directory = "../clips"
@@ -36,7 +36,7 @@ def main():
         video_path = download_directory + "/" + id + ".webm"
         if not os.path.exists(video_path):
             print(f"Downloading \"{url}\"...")
-            video_path = youtube.download_video(url, download_directory, resolution=resolution, range=(0, max_range))
+            video_path = youtube.download_video(url, video_path, resolution=resolution, range=(0, max_range))
             if not video_path:
                 print("Failed to download video.")
                 continue
