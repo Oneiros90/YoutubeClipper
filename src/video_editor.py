@@ -2,14 +2,11 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy import concatenate_videoclips
 import os
 
-def extract_clip(video_path, start, end, output_dir):
-    os.makedirs(output_dir, exist_ok=True)
-    base_name = os.path.splitext(os.path.basename(video_path))[0]
-    output_file = f"{output_dir}/{base_name}.mp4"
+def extract_clip(video_path, start, end, output_file):
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with VideoFileClip(video_path) as clip:
         subclip = clip.subclipped(start, end)
         subclip.write_videofile(output_file, codec="libx264", audio_codec="aac", logger=None)
-    return output_file
 
 def combine_clips(clip_paths, output_path):
     clips = [VideoFileClip(clip) for clip in clip_paths]
